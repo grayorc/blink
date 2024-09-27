@@ -44,4 +44,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function isStaff(){
+        return $this->is_staff;
+    }
+
+    public function isSuperuser(){
+        return $this->is_superuser;
+    }
 }
