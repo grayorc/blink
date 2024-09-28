@@ -52,4 +52,8 @@ class User extends Authenticatable
     public function isSuperuser(){
         return $this->is_superuser;
     }
+
+    public function name(){
+        return $this->name;
+    }
 }

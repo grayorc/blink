@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 use function PHPUnit\Framework\isNull;
@@ -16,7 +17,7 @@ class AdminAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if($request->user()->isStaff() || $request->user()->isSuperuser())
+        if(Auth::check() && ($request->user()->isStaff() || $request->user()->isSuperuser()))
             return $next($request);
         else
             return redirect('/');
