@@ -3,17 +3,7 @@
         <li class="breadcrumb-item"><a href="/admin">داشبورد</a></li>
         <li class="breadcrumb-item active">کاربران </li>
     @endslot
-    <div class="checkbox">
-      <label>
-        <input type="checkbox" name="admin" id="admin"
-          hx-get="{{ route('users.index') }}" 
-          hx-target="#table-section"
-          hx-swap="outerHTML"
-          hx-trigger="click"
-        > نمایش مدیران
-      </label>
-    </div>
-    
+
           <!-- Main content -->
           <section class="content">
             <div class="col-12">
@@ -22,14 +12,14 @@
                     <h3 class="card-title">جدول ریسپانسیو</h3>
 
                     <div class="card-tools d-flex">
-
                       <form
                         hx-get="{{ route('users.index') }}" 
                         hx-target="#table-section"
                         hx-swap="outerHTML"
-                        hx-trigger="keyup, changed delay:500ms"
-
+                        hx-trigger="change, keyup from:input"
+                        class="d-flex"
                       >
+
                         <div class="input-group input-group-sm" style="width: 150px;">
                           <input type="text" name="search" class="form-control float-right" placeholder="جستجو"
                             
@@ -40,6 +30,18 @@
                             <button type="submit" class="btn btn-default"><i class="ri-user-search-line ri-lg"></i></button>
                           </div>
                         </div>
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="admin" id="admin"
+                              {{-- hx-get="{{ route('users.index') }}"  --}}
+                              {{-- hx-get="{{ request()->fullUrlWithQuery(['admin' => 1]) }}"  --}}
+                              {{-- hx-target="#table-section"
+                              hx-swap="outerHTML"
+                              hx-trigger="click" --}}
+                            > نمایش مدیران
+                          </label>
+                        </div>
+                        
                       </form>
                       <div class="btn-group-sm mr-1"> 
                       </div>

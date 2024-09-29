@@ -13,24 +13,26 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-
         $query = User::query();
-
-        if ($request->has('search') && $request->input('search') !== '') {
+    
+        if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->where('name', 'like', '%' . $search . '%')
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
                   ->orWhere('email', 'like', '%' . $search . '%')
                   ->orWhere('id', $search);
-        }
-
-        if($request->has('admin')){
-            $query->where('is_staff',1)->orWhere('is_superuser',1);
+            });
         }
     
-        $users = $query->get(); 
-
-        // $users = User::paginate(20);
+        if ($request->input('admin') == 'on') {
+            $query->where(function($q) {
+                $q->where('is_staff', 1)
+                  ->orWhere('is_superuser', 1);
+            });
+        }
         
+        $users = $query->get(); 
+    
         return view('admin.users.all', compact('users'))
         ->fragmentIf(request()->hasHeader('HX-Request'),'table-section');
     }
