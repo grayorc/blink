@@ -3,7 +3,17 @@
         <li class="breadcrumb-item"><a href="/admin">داشبورد</a></li>
         <li class="breadcrumb-item active">کاربران </li>
     @endslot
-      
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" name="admin" id="admin"
+          hx-get="{{ route('users.index') }}" 
+          hx-target="#table-section"
+          hx-swap="outerHTML"
+          hx-trigger="click"
+        > نمایش مدیران
+      </label>
+    </div>
+    
           <!-- Main content -->
           <section class="content">
             <div class="col-12">
@@ -32,22 +42,19 @@
                         </div>
                       </form>
                       <div class="btn-group-sm mr-1"> 
-                        <div class="form-check form-switch">
-                          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                          <label class="form-check-label" for="flexSwitchCheckDefault">Default switch checkbox input</label>
-                        </div>
                       </div>
                     </div>
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body table-responsive p-0">
-                    <table class="table table-hover" >
+                    <table class="table table-hover" lang="en">
                     @fragment('table-section')
                       <tbody id="table-section" style="font-family: 'Vazir', sans-serif !important;">
                         <tr>
                           <th>شماره</th>
                           <th>نام</th>
                           <th>تاریخ عضویت</th>
+                          <th>ایمیل</th>
                           <th>وضعیت ایمیل</th>
                           <th>عملیات</th>
                         </tr>
@@ -56,6 +63,7 @@
                               <td>{{ $user->id }}</td>
                               <td>{{ $user->name }}</td>
                               <td>{{ verta($user->created_at)->format('Y/m/d') }}</td>
+                              <td>{{ $user->email }}</td>
                               <td>
                                   @if(is_null($user->email_verified_at))
                                       <span class="badge badge-danger">تایید نشده</span>
@@ -83,4 +91,7 @@
               </div>
           </section>
           <!-- /.content -->
+          <script>
+            document.getElementById("admin").checked = false;
+          </script>
 @endcomponent

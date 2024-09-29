@@ -19,7 +19,12 @@ class UserController extends Controller
         if ($request->has('search') && $request->input('search') !== '') {
             $search = $request->input('search');
             $query->where('name', 'like', '%' . $search . '%')
-                  ->orWhere('email', 'like', '%' . $search . '%');
+                  ->orWhere('email', 'like', '%' . $search . '%')
+                  ->orWhere('id', $search);
+        }
+
+        if($request->has('admin')){
+            $query->where('is_staff',1)->orWhere('is_superuser',1);
         }
     
         $users = $query->get(); 

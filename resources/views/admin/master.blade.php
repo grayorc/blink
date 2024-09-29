@@ -32,7 +32,6 @@
   <link rel="stylesheet" href="/dist/css/bootstrap-rtl.min.css">
   <!-- template rtl version -->
   <link rel="stylesheet" href="/dist/css/custom-style.css">
-
   
 </head>
 <body class="hold-transition sidebar-mini">

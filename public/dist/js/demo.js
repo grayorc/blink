@@ -229,6 +229,11 @@
 
   ConvertNumberToPersion();
 
+  document.body.addEventListener('htmx:afterSettle', function(evt) {
+    ConvertNumberToPersion();
+  });
+
+
   $('.sidebar-mini .main-header .nav-item').click(function () {
     let sidebar_mini = $('.sidebar-mini');
     let class_name = sidebar_mini.attr('class');
