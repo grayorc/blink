@@ -31,7 +31,7 @@ class UserController extends Controller
             });
         }
         
-        $users = $query->get(); 
+        $users = $query->paginate(20); 
     
         return view('admin.users.all', compact('users'))
         ->fragmentIf(request()->hasHeader('HX-Request'),'table-section');
@@ -91,8 +91,8 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
     }
 }

@@ -19,7 +19,9 @@
                         hx-trigger="change, keyup from:input"
                         class="d-flex"
                       >
-
+                      <button class="btn btn-light btn-sm" name="refresh" id="refresh" hx-get="{{ route('users.index') }}" hx-trigger="click" hx-target="#table-section" hx-swap="outerHTML">
+                        <i class="ri-reset-left-line"></i>
+                      </button>
                         <div class="input-group input-group-sm" style="width: 150px;">
                           <input type="text" name="search" class="form-control float-right" placeholder="جستجو"
                             
@@ -33,11 +35,6 @@
                         <div class="checkbox">
                           <label>
                             <input type="checkbox" name="admin" id="admin"
-                              {{-- hx-get="{{ route('users.index') }}"  --}}
-                              {{-- hx-get="{{ request()->fullUrlWithQuery(['admin' => 1]) }}"  --}}
-                              {{-- hx-target="#table-section"
-                              hx-swap="outerHTML"
-                              hx-trigger="click" --}}
                             > نمایش مدیران
                           </label>
                         </div>
@@ -51,17 +48,17 @@
                   <div class="card-body table-responsive p-0">
                     <table class="table table-hover" lang="en">
                     @fragment('table-section')
-                      <tbody id="table-section" style="font-family: 'Vazir', sans-serif !important;">
-                        <tr>
+                    <tbody id="table-section" style="font-family: 'Vazir', sans-serif !important;">
+                      <tr>
                           <th>شماره</th>
                           <th>نام</th>
                           <th>تاریخ عضویت</th>
                           <th>ایمیل</th>
                           <th>وضعیت ایمیل</th>
                           <th>عملیات</th>
-                        </tr>
-                          @foreach ($users as $user)
-                            <tr >
+                      </tr>
+                      @foreach ($users as $user)
+                          <tr id="row-{{ $user->id }}">
                               <td>{{ $user->id }}</td>
                               <td>{{ $user->name }}</td>
                               <td>{{ verta($user->created_at)->format('Y/m/d') }}</td>
@@ -72,22 +69,33 @@
                                   @else
                                       <span class="badge badge-success">تایید شده</span>
                                   @endif
-                                
                               </td>
                               <td>
-                                <button class="btn btn-light btn-sm text-danger"><i class="ri-delete-bin-2-line ri-fw"></i></button>
-                                <button class="btn btn-light btn-sm text-primary"><i class="ri-edit-2-line ri-1x"></i></button>
+                                  <button class="btn btn-light btn-sm text-danger"
+                                          hx-delete="{{ route('users.destroy', $user->id) }}" 
+                                          hx-trigger="click"
+                                          hx-target="#row-{{ $user->id }}"
+                                          hx-swap="outerHTML"
+                                          hx-confirm="آیا مطمئن هستید که می‌خواهید این کاربر را حذف کنید؟"
+                                          hx-headers='{"X-CSRF-TOKEN": "{{ csrf_token() }}"}'
+                                          ><i class="ri-delete-bin-2-line ri-fw"></i></button>
+                                  <button class="btn btn-light btn-sm text-primary">
+                                      <i class="ri-edit-2-line ri-1x"></i>
+                                  </button>
                               </td>
-                            </tr>
-                          @endforeach
-                      </tbody>
+                          </tr>
+                      @endforeach
+                  </tbody>
                     @endfragment
                   </table>
                   </div>
                   <!-- /.card-body -->
-                  <div class="card-footer">
-                    {{-- {{ $users->render() }} --}}
+                  <div id="pagination-section">
+                    {{ $users->appends(request()->input())->links() }}
                   </div>
+                  {{-- <div class="card-footer">
+                    {{ $users->render() }}
+                  </div> --}}
                 </div>
                 <!-- /.card -->
               </div>
